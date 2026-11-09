@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="color-scheme" content="dark" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+  />
+  <title>ShelfLife — Карточки</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/report.css" />
+</head>
+<body>
+  <div id="app" class="report-app">
+    <header id="topbar">
+      <div class="title">Карточки</div>
+      <div class="title" style="margin-left:auto;font-size:13px;color:var(--hint);white-space:nowrap;">
+        <span id="card-counter"></span>
+      </div>
+      <button id="btn-settings" class="icon-btn" aria-label="Настройки">⚙</button>
+</header>
+
+    <nav id="tabs">
+      <button class="tab active" data-tab="tinder">Карточки</button>
+      <button class="tab" data-tab="list">Список</button>
+    </nav>
+
+    <!-- Фильтр по статусу на главном экране (синхронизирован с настройками). -->
+    <div class="status-filter" id="main-filter">
+      <button class="chip active" data-status="all">Все</button>
+      <button class="chip" data-status="expired">Списание</button>
+      <button class="chip" data-status="onsale">Уценка</button>
+      <button class="chip" data-status="marked">Уценён</button>
+      <button class="chip" data-status="missing">Отсутствует</button>
+      <button class="chip" data-status="fresh">Свежие</button>
+    </div>
+
+    <main id="content" class="report-content">
+      <!-- Stack view -->
+      <div id="stack-view" class="view">
+        <!-- filters moved to settings -->
+        <div class="card-nav">
+          <button id="btn-prev" class="icon-btn" aria-label="Предыдущий">‹</button>
+          <span id="card-counter-nav"></span>
+          <button id="btn-next" class="icon-btn" aria-label="Следующий">›</button>
+        </div>
+        <div id="card" class="card card--stack"></div>
+        <div id="stack-hint" class="stack-hint">
+          <span class="dot"></span> ← уценен
+          <span class="spacer"></span>
+          → отсутствует
+        </div>
+        <div class="stack-actions">
+        </div>
+      </div>
+
+      <!-- List view -->
+      <div id="list-view" class="view" hidden>
+        <div class="list-head">
+          <input id="list-search" class="search" placeholder="Поиск по названию, категории, штрихкоду" />
+        </div>
+        <div id="list" class="list"></div>
+        <div id="list-pager" class="pager" hidden></div>
+        <div id="list-empty" class="empty" hidden>Ничего не найдено</div>
+      </div>
+
+      <div id="card-date-dock" class="card-date-dock" hidden>
+        <!-- Как в Android (ExpirationMode): либо вводим дату производства и
+             считаем срок, либо вводим дату истечения напрямую. -->
+        <div id="date-mode" class="date-mode">
+          <button type="button" class="chip" data-date-mode="shelf">Срок хранения</button>
+          <button type="button" class="chip" data-date-mode="exact">Дата истечения</button>
+        </div>
+        <label id="card-date-label" for="card-date">Дата производства</label>
+        <input type="date" id="card-date" />
+        <div id="card-exp-info" class="card-exp-info"></div>
+      </div>
+
+<div id="empty-view" class="empty" hidden>
+        В приоритетных группах (списание, уценка, отсутствующие) пока нет товаров. Выберите режим Список.
+      </div>
+    <div id="settings-view" class="view" hidden>
+  <div class="settings-panel">
+    <h3>Настройки</h3>
+    <div class="status-filter" id="settings-filter">
+      <button class="chip active" data-status="all">Все</button>
+      <button class="chip" data-status="expired">Списание</button>
+      <button class="chip" data-status="onsale">Уценка</button>
+      <button class="chip" data-status="marked">Уценён</button>
+      <button class="chip" data-status="missing">Отсутствует</button>
+      <button class="chip" data-status="fresh">Свежие</button>
+    </div>
+    <div class="warn-days">
+      <label for="settings-warn-days">Уценка за</label>
+      <select id="settings-warn-days" class="card-sort">
+        <option value="3">3</option>
+        <option value="5">5</option>
+        <option value="7">7</option>
+        <option value="10">10</option>
+        <option value="14">14</option>
+      </select>
+      <span>дн.</span>
+    </div>
+    <div class="sort-row">
+      <label for="settings-sort">Сортировка</label>
+      <select id="settings-sort" class="card-sort">
+        <option value="date">Дата</option>
+        <option value="category">Категория</option>
+        <option value="name">Название</option>
+      </select>
+      <button id="settings-sort-dir" class="icon-btn">↑</button>
+    </div>
+    <button id="settings-save" class="btn primary">Сохранить</button>
+    <button id="settings-back" class="btn secondary">Назад</button>
+  </div>
+</div>
+</main>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="/report.js"></script>
+</body>
+</html>

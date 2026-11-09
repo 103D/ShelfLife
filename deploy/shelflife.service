@@ -1,0 +1,22 @@
+[Unit]
+Description=ShelfLife Telegram Bot + Mini App
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=opc
+WorkingDirectory=/home/opc/shelflife
+EnvironmentFile=/etc/shelflife/env
+ExecStart=/usr/local/bin/node dist/index.js
+Restart=always
+RestartSec=5
+
+# Логи пишет systemd (journald) — SELinux-совместимо, без записи в user_home_t.
+# Просмотр: journalctl -u shelflife -f
+
+# Безопасность (мягкая)
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

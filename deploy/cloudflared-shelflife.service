@@ -1,0 +1,17 @@
+[Unit]
+Description=Cloudflare Tunnel for ShelfLife Mini App
+After=network-online.target shelflife.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=opc
+ExecStart=/usr/local/bin/shelflife-tunnel.sh
+Restart=always
+RestartSec=10
+# Логи -> journald (SELinux-совместимо). URL туннеля:
+#   journalctl -u cloudflared-shelflife -g trycloudflare
+
+[Install]
+WantedBy=multi-user.target
+

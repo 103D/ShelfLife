@@ -1,0 +1,36 @@
+# Render Blueprint for ShelfLife Telegram Bot + Mini App
+# Deploy: push to GitHub -> Render Dashboard -> New Blueprint Instance
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: shelflife-api
+    runtime: node
+    plan: starter  # or free (with limitations)
+    region: frankfurt  # or oregon, singapore
+    buildCommand: "npm ci && npm run build"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      - key: WEBAPP_STATIC_DIR
+        value: "./public"
+      - key: DB_PATH
+        value: "/var/data/shelflife.db"
+      - key: DEV_AUTH
+        value: "0"
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBAPP_URL
+        sync: false
+    # Persistent disk for SQLite database
+    disk:
+      name: shelflife-data
+      mountPath: /var/data
+      sizeGB: 1
+    # Health check
+    healthCheckPath: /api/products?limit=1
+    # Auto-deploy on push to main
+    autoDeploy: true
