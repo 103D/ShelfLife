@@ -4,17 +4,17 @@
 
 services:
   - type: web
-    name: shelflife-api
+    name: shelflife-bot
     runtime: node
-    plan: starter  # or free (with limitations)
-    region: frankfurt  # or oregon, singapore
-    buildCommand: "npm ci && npm run build"
-    startCommand: "npm start"
+    plan: free
+    region: frankfurt
+    buildCommand: "npm ci"
+    startCommand: "npm run render-start"
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: "3000"
+        value: "10000"
       - key: WEBAPP_STATIC_DIR
         value: "./public"
       - key: DB_PATH
@@ -31,6 +31,6 @@ services:
       mountPath: /var/data
       sizeGB: 1
     # Health check
-    healthCheckPath: /api/products?limit=1
+    healthCheckPath: /api/health
     # Auto-deploy on push to main
     autoDeploy: true
